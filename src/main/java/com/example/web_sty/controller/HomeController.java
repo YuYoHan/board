@@ -12,10 +12,4 @@ public class HomeController {
         return "home";
     }
 
-
-
-    @GetMapping("/hello")
-    public String hello() {
-        return "/hello";
-    }
 }
