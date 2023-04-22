@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light " style="background-color: #F2D7D5;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">🌺</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="card text-center">
+            <h5 class="card-header">Study make user & board</h5>
+            <div class="card-body">
+                <h5 class="card-title">hello! 😀 </h5>
+                <a th:href="@{/user/save}" >회원가입</a><br/>
+                <a th:href="@{/user/login}">로그인</a><br/>
+                <a th:href="@{/user/}">회원목록 </a><br/>
+                <a th:href="@{/user/update}">내 정보 수정하기</a><br/>
+                <a th:href="@{/board/boardIndex}">게시글 보러가기</a> <br/>
+                session 값 확인: <p th:text="${session.loginEmail}"></p>
+                <a th:href="@{/user/logout}">로그아웃</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
