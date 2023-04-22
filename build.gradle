@@ -1,0 +1,100 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.8'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'jacoco'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+jacoco {
+    // JaCoCo 버전
+    toolVersion = '0.8.7'
+
+//  테스트결과 리포트를 저장할 경로 변경하는 방법
+//  default는 "$/jacoco"
+//  reportsDir = file("$buildDir/customJacocoReportDir")
+    // Jacoco report 결과물 디렉토리 설정입니다
+    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
+test {
+    // finalizedBy : 이(test) 작업에 대해 주어진 종료자 작업을 추가
+    finalizedBy jacocoTestReport // test 작업이 끝나고 jacocoTestReport를 실행
+}
+jacocoTestReport {
+    // dependsOn : 이 작업에 지정된 종속성을 추가
+    dependsOn test // jacocoTestReport 에 test라는 종속성을 추가
+}
+jacocoTestReport {
+    reports {
+        // required : 이전엔 enabled로 쓰였던 속성으로 생성 여부를 결정하는 플래그입니다.
+        xml.required = false
+        csv.required = false
+        // outputLocation : 보고서를 생성할 파일 시스템의 위치입니다.
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.5
+            }
+        }
+
+        // 룰을 정의
+        rule {
+            // true 로 설정하면 포함된 작업에 대한 데이터가 수집됩니다.
+            enabled = false
+            // element : Java 요소의 유형을 나타냅니다. (BUNDLE, CLASS, GROUP, METHOD, PACKAGE, SOURCEFILE)
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+
+            // limit : rule 에 대한 제한을 설정합니다.
+            limit {
+                // counter : 커버리지 측정 단위를 설정합니다. (BRANCH, CLASS, COMPLEXITY, INSTRUCTION, LINE, METHOD)
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.5
+            }
+        }
+    }
+}
+
+
+
+
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    all {
+        //logback과의 충돌 방지
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // log4j
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
