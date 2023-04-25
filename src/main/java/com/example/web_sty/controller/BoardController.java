@@ -64,4 +64,6 @@ public class BoardController {
         model.addAttribute("board", board);
         return "/board/detail";
     }
+
+
 }
