@@ -4,6 +4,9 @@ import com.example.web_sty.dto.BoardDTO;
 import com.example.web_sty.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +71,15 @@ public class BoardController {
     public String delete(@PathVariable Long id) {
         boardService.delete(id);
         return "redirect:/board/boardIndex";
+    }
+
+    // /board/paging?page=1
+    @GetMapping("/paging")
+    public String paging(@PageableDefault(page = 1)Pageable pageable, Model model) {
+        Page<BoardDTO> boardDTOS = boardService.paging(pageable);
+        int blockLimit = 3;
+
+        // page 갯수 20개
     }
 
 }
