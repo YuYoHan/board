@@ -95,7 +95,14 @@ public class BoardService {
         log.info("boardEntities.isLast() = " + boardEntities.isLast());
 
         // 목록: id, writer, title, hits, createdTime
-        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));
+        Page<BoardDTO> boardDTOS =
+                // map을 이용해서 board 엔티티를 BoardDTO로 바꿔주는 것이다.
+                boardEntities.map(board -> new BoardDTO(
+                        board.getId(),
+                        board.getBoardWriter(),
+                        board.getBoardTitle(),
+                        board.getBoardHits(),
+                        board.getCreatedTime()));
         return boardDTOS;
     }
 }
