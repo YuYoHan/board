@@ -31,7 +31,7 @@ public class SecurityConfig {
 
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.PUT,"/api/v1/users/update")
+                .antMatchers(HttpMethod.PUT,"/api/v1/users")
                 .access("hasRole('ROLE_USER')")
                 .antMatchers(HttpMethod.DELETE,"/api/v1/users/{userId}")
                 .access("hasRole('ROLE_USER')")

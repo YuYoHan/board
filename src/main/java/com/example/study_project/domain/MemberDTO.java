@@ -25,7 +25,7 @@ public class MemberDTO {
         this.role = role;
     }
 
-    public static MemberDTO memberDTO(MemberEntity memberEntity) {
+    public static MemberDTO toMemberDTO(MemberEntity memberEntity) {
         return MemberDTO.builder()
                 .memberId(memberEntity.getMemberId())
                 .memberEmail(memberEntity.getMemberEmail())
