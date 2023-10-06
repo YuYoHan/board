@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -61,6 +62,7 @@ public class BoardService {
                     .contents(findBoard.getContents())
                     .writer(findBoard.getCreateBy())
                     .regTime(findBoard.getRegTime())
+                    .updateTime(findBoard.getUpdateTime())
                     .build();
 
             log.info("board : " + boardDTO);
@@ -77,6 +79,7 @@ public class BoardService {
         try {
             BoardEntity findBoard = boardRepository.findById(boardId)
                     .orElseThrow(EntityNotFoundException::new);
+            log.info("time : " + findBoard.getRegTime());
 
             MemberEntity findMember = memberRepository.findByMemberEmail(memberEmail);
 
@@ -88,14 +91,17 @@ public class BoardService {
                         .member(findMember)
                         .build();
                 BoardEntity save = boardRepository.save(boardEntity);
+                log.info("saveTime : " + save.getUpdateTime());
 
                 BoardDTO boardDTO1 = BoardDTO.builder()
-                        .boardId(save.getBoardId())
+                        .boardId(findBoard.getBoardId())
                         .title(save.getTitle())
                         .contents(save.getContents())
-                        .writer(save.getModifiedBy())
-                        .updateTime(save.getUpdateTime())
+                        .writer(memberEmail)
+                        .regTime(findBoard.getRegTime())
+                        .updateTime(LocalDateTime.now())
                         .build();
+
 
                 return ResponseEntity.ok().body(boardDTO1);
             } else {

@@ -124,7 +124,7 @@ public class MemberService {
                     return ResponseEntity.ok().body(token);
                 } else {
                     log.info("비밀번호가 일치 하지 않습니다.");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 일치 하지 않습니다.");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("아이디 또는 비밀번호가 일치 하지 않습니다.");
                 }
             }
             return ResponseEntity.notFound().build();

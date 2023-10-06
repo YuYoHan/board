@@ -1,5 +1,9 @@
 package com.example.study_project.config.security;
 
+import com.example.study_project.config.jwt.JwtAccessDenieHandler;
+import com.example.study_project.config.jwt.JwtAuthenticationEntryPoint;
+import com.example.study_project.config.jwt.JwtProvider;
+import com.example.study_project.config.jwt.JwtSecurityConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +25,8 @@ import java.util.Map;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JwtProvider jwtProvider;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -39,6 +45,17 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/users/**").permitAll()
                 .antMatchers("/api/v1/boards/**")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')");
+
+        http
+                // JWT Token을 위한 Filter를 아래에서 만들어 줄건데,
+                // 이 Filter를 어느위치에서 사용하겠다고 등록을 해주어야 Filter가 작동이 됩니다.
+                .apply(new JwtSecurityConfig(jwtProvider));
+
+        // 에러 방지
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                .accessDeniedHandler(new JwtAccessDenieHandler());
 
         return http.build();
     }
