@@ -1,6 +1,7 @@
 package com.example.study_project.service;
 
 import com.example.study_project.domain.BoardDTO;
+import com.example.study_project.domain.CommentDTO;
 import com.example.study_project.entity.BoardEntity;
 import com.example.study_project.entity.MemberEntity;
 import com.example.study_project.repository.BoardRepository;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -56,6 +58,11 @@ public class BoardService {
             BoardEntity findBoard = boardRepository.findById(boardId)
                     .orElseThrow(EntityNotFoundException::new);
 
+            List<CommentDTO> comments = findBoard.getComments()
+                    .stream()
+                    .map(CommentDTO::toCommentDTO)
+                    .collect(Collectors.toList());
+
             BoardDTO boardDTO = BoardDTO.builder()
                     .boardId(boardId)
                     .title(findBoard.getTitle())
@@ -63,6 +70,7 @@ public class BoardService {
                     .writer(findBoard.getCreateBy())
                     .regTime(findBoard.getRegTime())
                     .updateTime(findBoard.getUpdateTime())
+                    .commentDTOS(comments)
                     .build();
 
             log.info("board : " + boardDTO);
@@ -93,13 +101,18 @@ public class BoardService {
                 BoardEntity save = boardRepository.save(boardEntity);
                 log.info("saveTime : " + save.getUpdateTime());
 
+                List<CommentDTO> comments = findBoard.getComments()
+                        .stream()
+                        .map(CommentDTO::toCommentDTO)
+                        .collect(Collectors.toList());
+
                 BoardDTO boardDTO1 = BoardDTO.builder()
                         .boardId(findBoard.getBoardId())
                         .title(save.getTitle())
                         .contents(save.getContents())
                         .writer(memberEmail)
-                        .regTime(findBoard.getRegTime())
                         .updateTime(LocalDateTime.now())
+                        .commentDTOS(comments)
                         .build();
 
 
