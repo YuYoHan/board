@@ -5,6 +5,7 @@ import com.example.study_project.domain.CommentDTO;
 import com.example.study_project.entity.BoardEntity;
 import com.example.study_project.entity.MemberEntity;
 import com.example.study_project.repository.BoardRepository;
+import com.example.study_project.repository.CommentRepository;
 import com.example.study_project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class BoardService {
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     // 게시글 등록
     public ResponseEntity<?> create(BoardDTO boardDTO, String memberEmail) throws Exception {
@@ -80,7 +82,7 @@ public class BoardService {
         }
     }
 
-    // 상품 수정
+    // 게시글 수정
     public ResponseEntity<?> update(Long boardId,
                                     BoardDTO boardDTO,
                                     String memberEmail) throws Exception {
@@ -97,26 +99,28 @@ public class BoardService {
                         .title(boardDTO.getTitle())
                         .contents(boardDTO.getContents())
                         .member(findMember)
+                        .comments(findBoard.getComments())
                         .build();
                 BoardEntity save = boardRepository.save(boardEntity);
                 log.info("saveTime : " + save.getUpdateTime());
 
-                List<CommentDTO> comments = findBoard.getComments()
-                        .stream()
-                        .map(CommentDTO::toCommentDTO)
-                        .collect(Collectors.toList());
+//                List<CommentDTO> comments = findBoard.getComments()
+//                        .stream()
+//                        .map(CommentDTO::toCommentDTO)
+//                        .collect(Collectors.toList());
+//
+//                BoardDTO boardDTO1 = BoardDTO.builder()
+//                        .boardId(findBoard.getBoardId())
+//                        .title(save.getTitle())
+//                        .contents(save.getContents())
+//                        .writer(memberEmail)
+//                        .updateTime(LocalDateTime.now())
+//                        .commentDTOS(comments)
+//                        .build();
 
-                BoardDTO boardDTO1 = BoardDTO.builder()
-                        .boardId(findBoard.getBoardId())
-                        .title(save.getTitle())
-                        .contents(save.getContents())
-                        .writer(memberEmail)
-                        .updateTime(LocalDateTime.now())
-                        .commentDTOS(comments)
-                        .build();
+                BoardDTO returnBoard = BoardDTO.toBoardDTO(save);
 
-
-                return ResponseEntity.ok().body(boardDTO1);
+                return ResponseEntity.ok().body(returnBoard);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원이 없습니다.");
             }
@@ -134,6 +138,7 @@ public class BoardService {
             MemberEntity findMember = memberRepository.findByMemberEmail(memberEmail);
             if(findMember.getMemberEmail().equals(findBoard.getMember().getMemberEmail())) {
                 boardRepository.deleteByBoardId(boardId);
+                commentRepository.deleteByBoardEntityBoardId(boardId);
                 return "게시물을 삭제했습니다.";
             } else {
                 return "해당 유저의 게시글이 아닙니다.";

@@ -48,7 +48,7 @@ public class CommentService {
                     .boardId(findBoard.getBoardId())
                     .title(findBoard.getTitle())
                     .contents(findBoard.getContents())
-                    .member(findMember)
+                    .member(findBoard.getMember())
                     .comments(commentEntities)
                     .build();
             boardRepository.save(findBoard);
