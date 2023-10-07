@@ -149,4 +149,10 @@ public class BoardService {
         return all.map(BoardDTO::toBoardDTO);
     }
 
+    // 검색했을 때 게시물 보여주기
+    public Page<BoardDTO> getSearchBoards(Pageable pageable, String searchKeyword) {
+        Page<BoardEntity> searchBoards = boardRepository.findByTitleContaining(searchKeyword, pageable);
+        return searchBoards.map(BoardDTO::toBoardDTO);
+    }
+
 }

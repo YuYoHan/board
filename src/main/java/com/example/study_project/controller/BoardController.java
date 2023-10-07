@@ -59,19 +59,36 @@ public class BoardController {
     // 전체 게시글 보기
     @GetMapping("")
     public ResponseEntity<?> getItems(
-            @PageableDefault(sort = "boardId", direction = Sort.Direction.DESC)Pageable pageable
+            @PageableDefault(sort = "boardId", direction = Sort.Direction.DESC)Pageable pageable,
+            String searchKeyword
             ) {
-        Page<BoardDTO> board = boardService.getBoards(pageable);
-        Map<String, Object> boards = new HashMap<>();
-        boards.put("boards", board.getContent());
-        boards.put("nowPageNumber", board.getNumber());
-        boards.put("totalPage", board.getTotalPages());
-        boards.put("pageSize",board.getSize());
-        boards.put("hasNextPage", board.hasNext());
-        boards.put("hasPreviousPage", board.hasPrevious());
-        boards.put("isFirstPage", board.isFirst());
-        boards.put("isLastPage", board.isLast());
-        return  ResponseEntity.ok().body(boards);
+
+        // 검색하지 않을 때는 모든 글을 가져오고 검색하면 검색한거를 보여줌
+        if(searchKeyword == null) {
+            Page<BoardDTO> board = boardService.getBoards(pageable);
+            Map<String, Object> boards = new HashMap<>();
+            boards.put("boards", board.getContent());
+            boards.put("nowPageNumber", board.getNumber());
+            boards.put("totalPage", board.getTotalPages());
+            boards.put("pageSize",board.getSize());
+            boards.put("hasNextPage", board.hasNext());
+            boards.put("hasPreviousPage", board.hasPrevious());
+            boards.put("isFirstPage", board.isFirst());
+            boards.put("isLastPage", board.isLast());
+            return  ResponseEntity.ok().body(boards);
+        } else {
+            Page<BoardDTO> searchBoards = boardService.getSearchBoards(pageable, searchKeyword);
+            Map<String, Object> boards = new HashMap<>();
+            boards.put("boards", searchBoards.getContent());
+            boards.put("nowPageNumber", searchBoards.getNumber());
+            boards.put("totalPage", searchBoards.getTotalPages());
+            boards.put("pageSize",searchBoards.getSize());
+            boards.put("hasNextPage", searchBoards.hasNext());
+            boards.put("hasPreviousPage", searchBoards.hasPrevious());
+            boards.put("isFirstPage", searchBoards.isFirst());
+            boards.put("isLastPage", searchBoards.isLast());
+            return  ResponseEntity.ok().body(boards);
+        }
     }
 
     // 게시글 수정

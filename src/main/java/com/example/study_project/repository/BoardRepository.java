@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     BoardEntity deleteByBoardId(Long boardId);
     Page<BoardEntity> findAll(Pageable pageable);
+    Page<BoardEntity> findByTitleContaining(String searchKeyword, Pageable pageable);
 }
