@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class BoardEntity extends BaseEntity{
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private Long boardId;
     private String title;

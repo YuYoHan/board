@@ -7,7 +7,7 @@ select * from comment;
 drop table board;
 
 create table member(
-    member_id bigint auto_increment primary key default ,
+    member_id bigint auto_increment primary key,
     member_email varchar(300) unique ,
     password varchar(300),
     role varchar(300),
@@ -27,7 +27,7 @@ create table board(
 );
 
 create table comment(
-    comment_id bigint auto_increment primary key ,
+    comment_id bigint auto_increment primary key,
     reg_time datetime default now(),
     update_time datetime default now(),
     comment varchar(3000),
@@ -35,4 +35,4 @@ create table comment(
     foreign key pk_boardId(board_id) references board(board_id),
     member_id bigint,
     foreign key pk_memberId(member_id) references member(member_id)
-)
+);
