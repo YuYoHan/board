@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -138,7 +137,6 @@ public class BoardService {
             MemberEntity findMember = memberRepository.findByMemberEmail(memberEmail);
             if(findMember.getMemberEmail().equals(findBoard.getMember().getMemberEmail())) {
                 boardRepository.deleteByBoardId(boardId);
-                commentRepository.deleteByBoardEntityBoardId(boardId);
                 return "게시물을 삭제했습니다.";
             } else {
                 return "해당 유저의 게시글이 아닙니다.";
