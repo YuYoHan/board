@@ -32,7 +32,7 @@ jobs:
         run: ./gradlew clean build
 
       - name: Setup MySQL
-        uses: action/mysql-action@v1
+        uses: samin/mysql-action@v1
         with:
           character set server: 'utf8'
           host port : 3306
