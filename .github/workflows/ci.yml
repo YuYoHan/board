@@ -32,10 +32,11 @@ jobs:
         run: ./gradlew clean build
 
       - name: Setup MySQL
-        uses: samin/mysql-action@v1
+        uses: action/mysql-action@v3
         with:
           character set server: 'utf8'
           host port : 3306
           mysql database: 't'
           mysql user: 'root'
           mysql password: 1234 # github Secret 탭에서 설정하세요!
+
