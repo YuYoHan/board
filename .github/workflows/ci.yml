@@ -27,12 +27,12 @@ jobs:
 
 
       - name : Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: Beanstalk +x gradlew
       - name : Build with Gradle
         run: ./gradlew clean build
 
       - name: Setup MySQL
-        uses: action/mysql-action@v3
+        uses: action/mysql-action@v1
         with:
           character set server: 'utf8'
           host port : 3306
