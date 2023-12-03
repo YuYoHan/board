@@ -19,19 +19,24 @@ public class BoardController {
     private final BoardService boardService;
 
 
-    @GetMapping("/board/save")
+    @GetMapping("/save")
     public String saveForm() {
         return "/board/save";
     }
 
-    @PostMapping("/board/save")
+    @PostMapping("/save")
     public String save(@ModelAttribute BoardDTO boardDTO) {
         log.info("boardDTO : " + boardDTO);
         boardService.save(boardDTO);
-        return "/board/save";
+        return "/board/boardIndex";
     }
 
     @GetMapping("/boardIndex")
+    public String index() {
+        return "/board/boardIndex";
+    }
+
+    @GetMapping("/boardList")
     public String findAll(Model model) {
         // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여준다.
         List<BoardDTO> boardDTOList = boardService.findAll();
