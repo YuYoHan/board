@@ -1,14 +1,20 @@
 plugins {
     id 'java'
+<<<<<<< HEAD
     id 'org.springframework.boot' version '2.7.8'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'jacoco'
+=======
+    id 'org.springframework.boot' version '2.7.11'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+>>>>>>> 5fe68111a6cab9799cc79a05a70111bf769ded05
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+<<<<<<< HEAD
 jacoco {
     // JaCoCo 버전
     toolVersion = '0.8.7'
@@ -68,14 +74,19 @@ jacocoTestCoverageVerification {
 
 
 
+=======
+>>>>>>> 5fe68111a6cab9799cc79a05a70111bf769ded05
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+<<<<<<< HEAD
     all {
         //logback과의 충돌 방지
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
     }
+=======
+>>>>>>> 5fe68111a6cab9799cc79a05a70111bf769ded05
 }
 
 repositories {
@@ -84,6 +95,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+<<<<<<< HEAD
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
@@ -93,6 +105,24 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // log4j
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+=======
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // validation
+    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // MySQL
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    // 액츄에이터
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+>>>>>>> 5fe68111a6cab9799cc79a05a70111bf769ded05
 }
 
 tasks.named('test') {
